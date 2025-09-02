@@ -40,6 +40,11 @@ from selenium.webdriver.common.by import By
 import spacy
 from spacy.cli import download
 
+from dotenv import find_dotenv, load_dotenv
+
+
+load_dotenv(find_dotenv())
+
 try:
     nlp = spacy.load("en_core_web_sm")
 except OSError:
@@ -131,12 +136,16 @@ def get_database_connection():
     pymysql.connections.Connection: A database connection object.
     """
     try:
+     
+        
         connection = pymysql.connect(
-            host=os.getenv('DB_HOST', 'localhost'),
-            user=os.getenv('DB_USER', 'root'),
-            password=os.getenv('DB_PASSWORD', 'Sanket@2610'),
-            database=os.getenv('DB_NAME', 'resume_analyzer'),
+            
+            host=os.getenv('DB_HOST'),
+            user=os.getenv('DB_USER'),
+            password=os.getenv('DB_PASSWORD'),
+            database=os.getenv('DB_NAME')
         )
+      
         return connection
     except Exception as e:
         st.error(f"Error connecting to the database: {e}")
@@ -394,7 +403,7 @@ def display_resume_analysis(resume_data):
     
     skills = resume_data.get('skills', [])
     st.subheader("Skills")
-    st.write(", ".join(skills))
+    st.write(", ".join(skills))      
     
     st.subheader("Skills Recommendation")
     recommended_skills = recommend_skills(skills)
@@ -885,7 +894,7 @@ def get_feedback_data():
         connection = pymysql.connect(
             host=os.getenv('DB_HOST', 'localhost'),
             user=os.getenv('DB_USER', 'root'),
-            password=os.getenv('DB_PASSWORD', 'Sanket@2610'),
+            password=os.getenv('DB_PASSWORD', 'deepa@2003'),
             database=os.getenv('DB_NAME', 'resume_analyzer'),
         )
         
@@ -991,7 +1000,7 @@ def main():
         }
         
         st.sidebar.title("AI Resume Analyzer")
-        st.sidebar.image("C:/Users/bodak/Desktop/AI_Resume_Analyzer-main/img.jpg", width=3072)
+        st.sidebar.image("image.png", width=3072)
        
         pages = ["User", "Find Jobs", "Feedback", "About", "Admin"]
         page = st.sidebar.radio("Navigation", pages)
